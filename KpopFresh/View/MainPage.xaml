@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:KpopFresh.Model"
+             xmlns:viewmodel="clr-namespace:KpopFresh.ViewModel"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewmodel:SongsViewModel"
+             x:Class="KpopFresh.MainPage"
+             Shell.NavBarIsVisible="false"
+             >
+    <Page.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="#392C4B"/>
+        <toolkit:EventToCommandBehavior
+        EventName="Appearing"
+        Command="{Binding GetSongsCommand}" />
+
+    </Page.Behaviors>
+
+    <Grid
+        ColumnDefinitions="*"
+        ColumnSpacing="0"
+        RowDefinitions="*,Auto"
+        RowSpacing="0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="250" />
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Image
+               Grid.ColumnSpan="3"
+               Source ="header.png"
+               VerticalOptions="Start"
+               HorizontalOptions="FillAndExpand"
+               Margin="0,0,0,0">
+            </Image>
+            <ImageButton
+                Grid.Row="1"
+                Grid.Column ="0"
+                Source = "filter.svg"
+                Clicked ="Filter_Clicked"
+                HeightRequest="54"
+                IsEnabled="{Binding IsNotBusy}"
+                Margin="0,-65,25,0">
+            </ImageButton>
+            <Button
+                Grid.Row="1"
+                Grid.Column ="1"
+                Text="{Binding TodayDate}" 
+                    TextColor="Black"
+                    Clicked="Date_Clicked"
+                    IsEnabled="{Binding IsNotBusy}"
+                    HeightRequest="50"
+                    WidthRequest ="200"
+                    Margin="0,-35,0,0"
+                    BorderWidth="1"
+                    BorderColor="#c8c8c8"
+                    Background="White"
+                    VerticalOptions="Start" >
+            </Button>
+            <ImageButton
+                Grid.Row="1"
+                Grid.Column ="2"
+                Clicked ="Sort_Clicked"
+                Source = "sort.svg"
+                IsEnabled="{Binding IsNotBusy}"
+                HeightRequest="54"
+                Margin="25,-65,0,0">
+            </ImageButton>
+        </Grid>
+        <CollectionView
+            x:Name= "collectionView"
+            Margin="0,280,0,0"
+            Grid.ColumnSpan="2"
+            ItemsSource="{Binding Songs}"
+            SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="model:Song">
+                    <Grid Padding="10">
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItem IconImageSource="pin.png" BackgroundColor="#AA216A"
+                                           Invoked="pinItemToTop">
+                                </SwipeItem>
+                            </SwipeView.RightItems>
+                            <Frame  MinimumHeightRequest="125" MaximumWidthRequest="250"
+                                BackgroundColor="{AppThemeBinding Light=White, Dark=#1C1329}">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </Frame.GestureRecognizers>
+                                <Grid Padding="0" ColumnDefinitions="0,*">
+                                    <VerticalStackLayout
+                                    HorizontalOptions="Start"
+                                    Grid.Column="1"
+                                    Padding="1"
+                                    >
+                                        <Label Text="{Binding Name}" 
+                                           TextColor ="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Text="{Binding Artist}" 
+                                           TextColor="#E31C79" 
+                                           FontAttributes="Bold"/>
+                                        <Label Text="{Binding Details}"
+                                           TextColor ="{AppThemeBinding Light=Black, Dark=White}"/>
+                                        <Label Text ="{Binding ViewCount}"
+                                           TextColor ="{AppThemeBinding Light=Black, Dark=White}"/>
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout
+                                    HorizontalOptions="End"
+                                    VerticalOptions="Center"
+                                    Grid.Column="1"
+                                    Padding="0">
+
+                                        <Image Aspect="AspectFill" Source="{Binding ImageUrl}"
+                                       WidthRequest="125"
+                                       HeightRequest="70"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="End"/>
+                                    </VerticalStackLayout>
+
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Center"
+                               />
+
+
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<mct:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:KpopFresh.Model"
+             xmlns:viewmodel="clr-namespace:KpopFresh.ViewModel"
+             xmlns:mct="clr-namespace:CommunityToolkit.Maui.Views;assembly=CommunityToolkit.Maui"
+             x:Class="KpopFresh.PopupPage">
+    <VerticalStackLayout
+        BackgroundColor ="White"
+        WidthRequest="380" 
+        HeightRequest="200"
+        VerticalOptions="End"
+        >
+        <Picker x:Name="picker"
+        Title="Pick a Date"
+        SelectedItem="{Binding TodayDate}"
+        VerticalOptions="End">
+        </Picker>
+        <Grid
+            HorizontalOptions ="Fill"
+            VerticalOptions="End">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+            Grid.Column ="0"
+            Text ="Cancel"
+            Clicked ="CancelClicked"
+            FontSize="Micro"
+            BorderWidth="1"
+            BorderColor="#c8c8c8"/>
+            <Button
+            Grid.Column ="1"
+            Text ="OK"
+            FontSize="Micro"
+            Clicked ="CancelClicked"
+            Command="{Binding GetSongsCommand}"
+            BorderWidth="1"
+            BorderColor="#c8c8c8"/>
+        </Grid>
+    </VerticalStackLayout>
+</mct:Popup>
